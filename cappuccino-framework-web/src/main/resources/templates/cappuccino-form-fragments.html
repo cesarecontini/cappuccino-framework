@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]><html xmlns:th="http://www.thymeleaf.org" class="lte-ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--><html xmlns:th="http://www.thymeleaf.org" lang="en"><!--<![endif]-->
+
+<head></head>
+
+<body>
+
+    <th:block th:fragment="cappuccino-form(i)">
+        <div class="grid-row">
+            <div class="column-full" id="form-section">
+                <form
+                        th:classappend="${#fields.hasAnyErrors()} ? ${cappuccinoPageTO.cssClasses.formError}"
+                        th:id="${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.formId}"
+                        th:method="${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.cappuccinoFormMethod.name()}"
+                        th:object="${formObject}"
+                        th:action="@{{formAction}(formAction=${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.formAction})}"
+                        novalidate="true">
+
+                    <div id="form-error-summary"
+                         role="group"
+                         aria-labelledby="error-summary-heading-5"
+                         tabindex="-1"
+                         th:if="${#fields.hasErrors('${formObject.*}')}">
+
+                        <div class="alert alert-danger" role="alert">
+                            <h3 id="error-summary-heading-5">Complete the missing information</h3>
+                            <p>Please review the following errors:</p>
+
+                            <th:block th:with="errors=${
+                                                    T(framework.CappuccinoTemplateUtils)
+                                                        .getFormErrorMessages(
+                                                            #fields.detailedErrors(),
+                                                            cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.orderedFields
+                                                        )
+                                                }">
+                                    <ul class="error-summary-list"
+                                            th:unless="${#lists.isEmpty(errors)}">
+                                        <li th:each="err,stat : ${errors}"
+                                            th:id="${err.fieldName + stat.index + '_errorLink'}">
+                                            <a
+                                               th:href="@{#__${err.fieldName}__}"
+                                               th:id="${err.fieldName + stat.index + '_errorAnchorLink'}"
+                                               th:text="${err.message}"></a>
+                                        </li>
+                                    </ul>
+                            </th:block>
+                        </div>
+
+                    </div>
+
+                    <div th:each="ff,stat : ${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.fields}"
+                         th:classappend="${
+                         (ff.displayMode == T(framework.CappuccinoFormField.DisplayMode).HALF_COLUMN ? cappuccinoPageTO.cssClasses.columnOneHalf : '') +
+                         (ff.displayMode == T(framework.CappuccinoFormField.DisplayMode).ONE_THIRD_COLUMN ? cappuccinoPageTO.cssClasses.columnOneThird : '')} "
+                        >
+
+                        <div th:unless="${#strings.isEmpty(ff.introHeader)}">
+                            <h3
+                                th:text="${ff.introHeader}"
+                                th:id="${ff.fieldName + 'introHeader'}"
+                                th:unless="${#strings.isEmpty(ff.introHeader)}"></h3>
+                            <span th:class="${cappuccinoPageTO.cssClasses.inputTextHint}"
+                                  th:utext="${ff.introHtmlHintText}"
+                                  th:id="${ff.fieldName + 'introHtmlHintText'}"
+                                  th:unless="${#strings.isEmpty(ff.introHtmlHintText)}"></span>
+                            <br />
+                        </div>
+
+
+                        <div th:classappend="${ff.dataTargetField ? 'panel panel-border-narrow js-hidden' : null}"
+                             th:id="${ff.dataTargetField ? ff.targetedById : ''}"
+                             th:attr="aria-hidden=${ff.dataTargetField ? 'true' : null}">
+
+                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).TEXT}">
+                            <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
+                                 th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
+                                <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.fieldName}">
+                                    <th:block th:utext="${ff.label}">Some label text</th:block>
+                                    <th:block th:unless="${#strings.isEmpty(ff.hintText)}">
+                                        <span th:class="${cappuccinoPageTO.cssClasses.inputTextHint}"
+                                              th:id="${ff.fieldName + '-label-hint'}"
+                                              th:utext="${ff.hintText}">
+                                            Some hint text
+                                        </span>
+                                    </th:block>
+                                </label>
+
+                                <input th:class="${cappuccinoPageTO.cssClasses.inputControl}"
+                                       th:id="${ff.fieldName}"
+                                       th:attr="maxlength=${ff.maxLength != null ? ff.maxLength : null}"
+                                       th:field="*{__${ff.fieldName}__}"
+                                       required="true"
+                                       type="text" />
+                                <th:block th:id="${ff.fieldName + 'Error'}"
+                                      th:if="${#fields.hasErrors('__${ff.fieldName}__')}"
+                                      th:each="err : ${#fields.errors('__${ff.fieldName}__')}">
+                                    <div th:class="${cappuccinoPageTO.cssClasses.inputErrorHint}" th:text="${err}"></div>
+                                </th:block>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).HIDDEN}">
+                            <input th:class="${cappuccinoPageTO.cssClasses.inputControl}"
+                                   th:id="${ff.fieldName}"
+                                   th:field="*{__${ff.fieldName}__}"
+                                   type="hidden" />
+                        </th:block>
+                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).TEXTAREA}">
+                            <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
+                                 th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
+                                <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.fieldName}">
+                                    <th:block th:utext="${ff.label}">Some label text</th:block>
+                                    <th:block th:unless="${#strings.isEmpty(ff.hintText)}">
+                                        <span th:class="${cappuccinoPageTO.cssClasses.inputTextHint}"
+                                              th:id="${ff.fieldName + '-label-hint'}"
+                                              th:utext="${ff.hintText}">
+                                            Some hint text
+                                        </span>
+                                    </th:block>
+                                </label>
+
+                                <textarea th:class="${cappuccinoPageTO.cssClasses.inputControl}"
+                                       th:id="${ff.fieldName}"
+                                       required="true"
+                                       rows="10"
+                                       th:field="*{__${ff.fieldName}__}"></textarea>
+                                <th:block th:id="${ff.fieldName + 'Error'}"
+                                          th:if="${#fields.hasErrors('__${ff.fieldName}__')}"
+                                          th:each="err : ${#fields.errors('__${ff.fieldName}__')}">
+                                    <div th:class="${cappuccinoPageTO.cssClasses.inputErrorHint}" th:text="${err}"></div>
+                                </th:block>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).NUMBER}">
+                            <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
+                                 th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
+                                <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.fieldName}">
+                                    <th:block th:utext="${ff.label}">Some label text</th:block>
+                                    <th:block th:unless="${#strings.isEmpty(ff.hintText)}">
+                                        <span th:class="${cappuccinoPageTO.cssClasses.inputTextHint}"
+                                              th:id="${ff.fieldName + '-label-hint'}"
+                                              th:utext="${ff.hintText}">
+                                            Some hint text
+                                        </span>
+                                    </th:block>
+                                </label>
+                                <input th:class="${cappuccinoPageTO.cssClasses.inputControl}"
+                                       th:id="${ff.fieldName}"
+                                       required="true"
+                                       th:attr="min=${ff.min != null ? ff.min : null},max=${ff.max != null ? ff.max : null}"
+                                       th:field="*{__${ff.fieldName}__}"
+                                       type="number" />
+                                <th:block th:id="${ff.fieldName + 'Error'}"
+                                          th:if="${#fields.hasErrors('__${ff.fieldName}__')}"
+                                          th:each="err : ${#fields.errors('__${ff.fieldName}__')}">
+                                    <div th:class="${cappuccinoPageTO.cssClasses.inputErrorHint}" th:text="${err}"></div>
+                                </th:block>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).RADIO}">
+                            <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
+                                 th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
+                                <fieldset th:classappend="${ff.radioOrCheckboxInline} ? inline">
+
+                                    <legend th:id="${ff.fieldName + 'Legend'}">
+
+                                        <th:block th:utext="${ff.label}">Some label text</th:block>
+
+                                        <th:block th:unless="${#strings.isEmpty(ff.hintText)}">
+                                            <span th:class="${cappuccinoPageTO.cssClasses.inputTextHint}"
+                                                  th:id="${ff.fieldName + '-label-hint'}"
+                                                  th:utext="${ff.hintText}">
+                                                Some hint text
+                                            </span>
+                                        </th:block>
+                                    </legend>
+                                    <th:block th:each="opt,stat : ${ff.options}">
+                                        <div th:class="${ff.radioOrCheckboxInline} ? ${cappuccinoPageTO.cssClasses.inputCheckboxGroupInline} : ${cappuccinoPageTO.cssClasses.inputCheckboxGroup}"
+                                             th:id="${opt.dataTarget != null ? opt.dataTarget + '-source' : null}" th:attr="data-target=${opt.dataTarget != null ? opt.dataTarget : null}">
+                                            <input th:id="${stat.first ? ff.fieldName : ff.fieldName + '-' + opt.value}"
+                                                   th:field="*{__${ff.fieldName}__}"
+                                                   type="radio"
+                                                   required="true"
+                                                   th:value="${opt.value}"  />
+                                            <label th:class="${cappuccinoPageTO.cssClasses.inputCheckboxlabel}"
+                                                    th:for="${stat.first ? ff.fieldName : ff.fieldName + '-' + opt.value}" th:text="${opt.key}">
+                                                Some key
+                                            </label>
+                                            <th:block th:id="${ff.fieldName + 'Error'}"
+                                                      th:if="${#fields.hasErrors('__${ff.fieldName}__') && stat.last}"
+                                                      th:each="err : ${#fields.errors('__${ff.fieldName}__')}">
+                                                <br />
+                                                <div th:class="${cappuccinoPageTO.cssClasses.inputErrorHint}" th:text="${err}"></div>
+                                            </th:block>
+                                        </div>
+                                    </th:block>
+
+
+                                </fieldset>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).CHECKBOX}">
+                            <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
+                                 th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
+                                <fieldset th:classappend="${ff.radioOrCheckboxInline} ? inline">
+
+                                    <legend th:id="${ff.fieldName + 'Legend'}">
+
+                                        <th:block th:utext="${ff.label}">Some label text</th:block>
+
+                                        <th:block th:unless="${#strings.isEmpty(ff.hintText)}">
+                                            <span th:class="${cappuccinoPageTO.cssClasses.inputTextHint}"
+                                                  th:id="${ff.fieldName + '-label-hint'}"
+                                                  th:utext="${ff.hintText}">
+                                                Some hint text
+                                            </span>
+                                        </th:block>
+                                    </legend>
+                                    <br />
+                                    <div th:id="${ff.fieldName + 'Error'}"
+                                         th:if="${ #fields.hasErrors('__${ff.fieldName}__') }"
+                                         th:include="base :: fielderrors(${ #fields.errors('__${ff.fieldName}__') })"></div>
+
+                                    <th:block th:each="opt,stat : ${ff.options}">
+                                        <div th:class="${ff.radioOrCheckboxInline} ? ${cappuccinoPageTO.cssClasses.inputCheckboxGroupInline} : ${cappuccinoPageTO.cssClasses.inputCheckboxGroup}"
+                                             th:attr="data-target=${opt.dataTarget != null ? opt.dataTarget : null}">
+                                            <input th:id="${stat.first ? ff.fieldName : ff.fieldName + '-' + opt.value}"
+                                                   th:field="*{__${ff.fieldName}__}"
+                                                   type="checkbox"
+                                                   th:value="${opt.value}"  />
+                                            <label th:class="${cappuccinoPageTO.cssClasses.inputCheckboxlabel}"
+                                                    th:for="${stat.first ? ff.fieldName : ff.fieldName + '-' + opt.value}" th:text="${opt.key}">
+                                                Some key
+                                            </label>
+                                        </div>
+                                    </th:block>
+                                </fieldset>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).DATE}">
+
+                            <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}" th:classappend="${
+                                    #fields.hasErrors('__${ff.dayDateFieldName}__') or
+                                    #fields.hasErrors('__${ff.monthDateFieldName}__') or
+                                    #fields.hasErrors('__${ff.yearDateFieldName}__') or
+                                    #lists.contains(#fields.globalErrors(), template.getProperty('invalidDateMessage'))
+                                    }? ${cappuccinoPageTO.cssClasses.inputGroupError}">
+                                <fieldset>
+                                    <legend th:id="${ff.fieldName + 'Legend'}">
+                                        <span th:id="${ff.fieldName + 'legend-title'}" class="form-label-bold">
+                                            <th:block th:text="${ff.label}">Some label text</th:block>
+                                        </span>
+                                        <span th:id="${ff.fieldName + 'legend-hints'}" th:class="${cappuccinoPageTO.cssClasses.inputTextHint}">
+                                            <th:block th:unless="${#strings.isEmpty(ff.hintText)}">
+                                                <span th:class="${cappuccinoPageTO.cssClasses.inputTextHint}"
+                                                      th:id="${ff.fieldName + '-label-hint'}"
+                                                      th:utext="${ff.hintText}">
+                                                    For example, 31 3 1980
+                                                </span>
+                                            </th:block>
+                                        </span>
+                                        <div th:id="${ff.dayDateFieldName + 'Error'}"
+                                             th:if="${ #fields.hasErrors('__${ff.dayDateFieldName}__') }"
+                                             th:include="base :: fielderrors(${ #fields.errors('__${ff.dayDateFieldName}__') })"></div>
+                                        <div th:id="${ff.monthDateFieldName + 'Error'}"
+                                             th:if="${ #fields.hasErrors('__${ff.monthDateFieldName}__') }"
+                                             th:include="base :: fielderrors(${ #fields.errors('__${ff.monthDateFieldName}__') })"></div>
+                                        <div th:id="${ff.yearDateFieldName + 'Error'}"
+                                             th:if="${ #fields.hasErrors('__${ff.yearDateFieldName}__') }"
+                                             th:include="base :: fielderrors(${ #fields.errors('__${ff.yearDateFieldName}__') })"></div>
+                                        <div  th:id="${ff.fieldName + 'invalidDateError'}"
+                                             th:if="${ #lists.contains(#fields.globalErrors(), template.getProperty('invalidDateMessage')) }"
+                                             th:include="base :: fielderrors( ${ template.getProperty('invalidDateMessage') } )"></div>
+
+                                    </legend>
+                                    <div class="form-date">
+                                        <div class="form-group form-group-day">
+                                            <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.dayDateFieldName}">Day</label>
+                                            <input th:class="${cappuccinoPageTO.cssClasses.inputControl}" min="1" max="31" th:id="${ff.dayDateFieldName}" th:field="*{__${ff.dayDateFieldName}__}" type="number"
+                                                   th:attr="aria-describedby=${ff.fieldName + 'legend-hints'}" />
+                                        </div>
+                                        <div class="form-group form-group-month">
+                                            <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.monthDateFieldName}">Month</label>
+                                            <input th:class="${cappuccinoPageTO.cssClasses.inputControl}" min="1" max="12" th:id="${ff.monthDateFieldName}" th:field="*{__${ff.monthDateFieldName}__}" type="number"
+                                                   th:attr="aria-describedby=${ff.fieldName + 'legend-hints'}" />
+                                        </div>
+                                        <div class="form-group form-group-year">
+                                            <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.yearDateFieldName}">Year</label>
+                                            <input th:class="${cappuccinoPageTO.cssClasses.inputControl}" min="1" max="2100" th:id="${ff.yearDateFieldName}" th:field="*{__${ff.yearDateFieldName}__}" type="number"
+                                                   th:attr="aria-describedby=${ff.fieldName + 'legend-hints'}" />
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                        </th:block>
+                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).SELECT}">
+                            <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
+                                 th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
+                                <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.fieldName}">
+                                    <th:block th:utext="${ff.label}">Some label text</th:block>
+                                    <th:block th:unless="${#strings.isEmpty(ff.hintText)}">
+                                        <span th:class="${cappuccinoPageTO.cssClasses.inputTextHint}"
+                                              th:id="${ff.fieldName + '-label-hint'}"
+                                              th:utext="${ff.hintText}">
+                                            Some hint text
+                                        </span>
+                                    </th:block>
+                                </label>
+
+                                <select
+                                        required="true"
+                                        th:class="${cappuccinoPageTO.cssClasses.inputControl}" th:id="${ff.fieldName}" th:field="*{__${ff.fieldName}__}">
+                                    <option value="">Select option</option>
+                                    <th:block th:each="opt,stat : ${ff.options}">
+                                        <option th:id="${ff.fieldName + stat.index}"
+                                                th:text="${opt.key}"
+                                                th:value="${opt.value}"></option>
+                                    </th:block>
+                                </select>
+                                <th:block th:id="${ff.fieldName + 'Error'}"
+                                          th:if="${#fields.hasErrors('__${ff.fieldName}__')}"
+                                          th:each="err : ${#fields.errors('__${ff.fieldName}__')}">
+                                    <div th:class="${cappuccinoPageTO.cssClasses.inputErrorHint}" th:text="${err}"></div>
+                                </th:block>
+                            </div>
+                        </th:block>
+
+                        </div>
+
+                    </div>
+
+                    <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}">
+                        <input th:class="${cappuccinoPageTO.cssClasses.buttonPrimary}" id="submit" type="submit" role="button"
+                           th:classappend="${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.submitButtonExtraCssClass != null ? cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.submitButtonExtraCssClass : ''}"
+                           th:attr="value=${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.submitButtonText},aria-label=${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.submitButtonText}"
+                            />
+                        <a th:class="${cappuccinoPageTO.cssClasses.buttonSecondary}" id="link-button"
+                                th:if="${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.linkButtonText != null}"
+                                th:classappend="${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.linkButtonExtraCssClass != null ? cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.linkButtonExtraCssClass : ''}"
+                                th:attr="aria-label=${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.linkButtonText}"
+                                th:href="@{{link}(link=${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.linkButtonHref})}"
+                                th:text="${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.linkButtonText}"></a>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </th:block>
+
+</body>
+
+</html>

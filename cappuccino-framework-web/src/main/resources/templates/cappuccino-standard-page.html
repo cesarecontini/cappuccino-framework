@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]><html xmlns:th="http://www.thymeleaf.org" class="lte-ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--><html xmlns:th="http://www.thymeleaf.org" lang="en"><!--<![endif]-->
+
+<head th:replace="base :: head(${cappuccinoPageTO.pageTitle})"></head>
+
+<body>
+
+<th:block th:if="${cappuccinoPageTO.displayHeader}">
+    <header role="banner" id="global-header" class="with-proposition" th:include="base :: header"></header>
+</th:block>
+
+<main th:class="${cappuccinoPageTO.cssClasses.container}" id="content" role="main" tabindex="-1">
+
+    <th:block th:if="${cappuccinoPageTO.displayAlphaBanner}">
+
+    </th:block>
+
+    <br />
+
+    <div th:class="${cappuccinoPageTO.cssClasses.row}"
+         id="cappuccino-page-breadcrumbs"
+         th:if="${cappuccinoPageTO.displayBreadcrumbs}">
+        <div th:class="${cappuccinoPageTO.cssClasses.column}"
+             th:unless="${#lists.isEmpty(cappuccinoPageTO.breadcrumbs)}">
+            <nav aria-label="breadcrumb">
+                <ol th:class="${cappuccinoPageTO.cssClasses.breadcrumbList}">
+                    <li th:each="breadcrumb,stat : ${cappuccinoPageTO.breadcrumbs}"
+                        th:id="${'breadcrumb-li-' + stat.index}"
+                        th:class="${cappuccinoPageTO.cssClasses.breadcrumbItem}"
+                        th:appendclass="${stat.last} ? ${cappuccinoPageTO.cssClasses.breadcrumbItemActive} : null"
+                        aria-current="page">
+                        <th:block th:if="${stat.last}" th:text="${breadcrumb.label}"></th:block>
+                        <a  th:unless="${stat.last}"
+                            th:id="${'breadcrumb-link-' + stat.index}"
+                            th:href="@{{link}(link=${breadcrumb.link})}"
+                           th:text="${breadcrumb.label}"></a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div th:class="${cappuccinoPageTO.cssClasses.row}"
+         th:unless="${#strings.isEmpty(cappuccinoPageTO.pageTitle)}">
+        <div  th:class="${cappuccinoPageTO.cssClasses.columnTwoThirds}" id="title-section">
+            <h1 id="main-title" th:text="${cappuccinoPageTO.pageTitle}">
+                Some Title
+            </h1>
+            <h2 id="sub-title" th:text="${cappuccinoPageTO.pageSubTitle}">Some subtitle</h2>
+        </div>
+    </div>
+
+    <br />
+
+    <th:block th:each="frag,stat : ${cappuccinoPageTO.fragments}">
+        <th:block th:unless="${frag.isForm()}">
+            <th:block th:replace="@{${frag.fragmentsTemplateName}} :: ${frag.fragmentName}"></th:block>
+        </th:block>
+        <th:block th:if="${frag.isForm()}">
+            <th:block th:replace="cappuccino-form-fragments :: cappuccino-form(${stat.index})"></th:block>
+        </th:block>
+    </th:block>
+
+</main>
+
+<th:block th:if="${cappuccinoPageTO.displayFooter}">
+    <footer class="group js-footer" id="footer" role="contentinfo" th:include="base :: footer"></footer>
+</th:block>
+
+
+<th:block th:include="base :: scripts"></th:block>
+
+</body>
+
+</html>
+
+
