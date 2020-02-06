@@ -1,4 +1,4 @@
-package framework.form;
+package web.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -14,7 +14,7 @@ import com.github.cesarecontini.cappuccino.framework.web.CappuccinoFragmentTO;
 import com.github.cesarecontini.cappuccino.framework.web.CappuccinoKeyValuePair;
 import com.github.cesarecontini.cappuccino.framework.web.CappuccinoPageTO;
 import com.github.cesarecontini.cappuccino.framework.web.CappuccinoPageUtils;
-import framework.form.MyForm;
+import web.form.MyForm;
 
 import javax.validation.Valid;
 import java.util.List;
