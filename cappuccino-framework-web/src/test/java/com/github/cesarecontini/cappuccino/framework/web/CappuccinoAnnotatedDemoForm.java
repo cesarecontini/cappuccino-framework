@@ -1,4 +1,4 @@
-package framework;
+package com.github.cesarecontini.cappuccino.framework.web;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;

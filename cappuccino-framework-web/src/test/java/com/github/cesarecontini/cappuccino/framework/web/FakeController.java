@@ -1,4 +1,4 @@
-package framework;
+package com.github.cesarecontini.cappuccino.framework.web;
 
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Controller;

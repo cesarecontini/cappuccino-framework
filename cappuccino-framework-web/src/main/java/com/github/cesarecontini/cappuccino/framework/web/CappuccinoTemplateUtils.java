@@ -1,4 +1,4 @@
-package framework;
+package com.github.cesarecontini.cappuccino.framework.web;
 
 import org.thymeleaf.spring5.util.DetailedError;
 import java.util.Collection;

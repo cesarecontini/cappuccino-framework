@@ -1,4 +1,4 @@
-package framework;
+package com.github.cesarecontini.cappuccino.framework.web;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>cappuccino-framework</artifactId>
-        <groupId>com.gccs-ne</groupId>
+        <groupId>com.github.cesarecontini</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -58,7 +58,7 @@
             <artifactId>webjars-locator</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.gccs-ne</groupId>
+            <groupId>com.github.cesarecontini</groupId>
             <artifactId>cappuccino-framework-web</artifactId>
             <version>1.0</version>
         </dependency>

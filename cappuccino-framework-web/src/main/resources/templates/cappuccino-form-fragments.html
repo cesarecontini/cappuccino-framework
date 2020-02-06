@@ -28,7 +28,7 @@
                             <p>Please review the following errors:</p>
 
                             <th:block th:with="errors=${
-                                                    T(framework.CappuccinoTemplateUtils)
+                                                    T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoTemplateUtils)
                                                         .getFormErrorMessages(
                                                             #fields.detailedErrors(),
                                                             cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.orderedFields
@@ -51,8 +51,8 @@
 
                     <div th:each="ff,stat : ${cappuccinoPageTO.fragments[__${i}__].cappuccinoForm.fields}"
                          th:classappend="${
-                         (ff.displayMode == T(framework.CappuccinoFormField.DisplayMode).HALF_COLUMN ? cappuccinoPageTO.cssClasses.columnOneHalf : '') +
-                         (ff.displayMode == T(framework.CappuccinoFormField.DisplayMode).ONE_THIRD_COLUMN ? cappuccinoPageTO.cssClasses.columnOneThird : '')} "
+                         (ff.displayMode == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormField.DisplayMode).HALF_COLUMN ? cappuccinoPageTO.cssClasses.columnOneHalf : '') +
+                         (ff.displayMode == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormField.DisplayMode).ONE_THIRD_COLUMN ? cappuccinoPageTO.cssClasses.columnOneThird : '')} "
                         >
 
                         <div th:unless="${#strings.isEmpty(ff.introHeader)}">
@@ -72,7 +72,7 @@
                              th:id="${ff.dataTargetField ? ff.targetedById : ''}"
                              th:attr="aria-hidden=${ff.dataTargetField ? 'true' : null}">
 
-                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).TEXT}">
+                        <th:block th:if="${ff.type == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormFieldType).TEXT}">
                             <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
                                  th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
                                 <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.fieldName}">
@@ -99,13 +99,13 @@
                                 </th:block>
                             </div>
                         </th:block>
-                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).HIDDEN}">
+                        <th:block th:if="${ff.type == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormFieldType).HIDDEN}">
                             <input th:class="${cappuccinoPageTO.cssClasses.inputControl}"
                                    th:id="${ff.fieldName}"
                                    th:field="*{__${ff.fieldName}__}"
                                    type="hidden" />
                         </th:block>
-                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).TEXTAREA}">
+                        <th:block th:if="${ff.type == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormFieldType).TEXTAREA}">
                             <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
                                  th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
                                 <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.fieldName}">
@@ -131,7 +131,7 @@
                                 </th:block>
                             </div>
                         </th:block>
-                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).NUMBER}">
+                        <th:block th:if="${ff.type == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormFieldType).NUMBER}">
                             <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
                                  th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
                                 <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.fieldName}">
@@ -157,7 +157,7 @@
                                 </th:block>
                             </div>
                         </th:block>
-                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).RADIO}">
+                        <th:block th:if="${ff.type == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormFieldType).RADIO}">
                             <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
                                  th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
                                 <fieldset th:classappend="${ff.radioOrCheckboxInline} ? inline">
@@ -199,7 +199,7 @@
                                 </fieldset>
                             </div>
                         </th:block>
-                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).CHECKBOX}">
+                        <th:block th:if="${ff.type == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormFieldType).CHECKBOX}">
                             <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
                                  th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
                                 <fieldset th:classappend="${ff.radioOrCheckboxInline} ? inline">
@@ -237,7 +237,7 @@
                                 </fieldset>
                             </div>
                         </th:block>
-                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).DATE}">
+                        <th:block th:if="${ff.type == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormFieldType).DATE}">
 
                             <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}" th:classappend="${
                                     #fields.hasErrors('__${ff.dayDateFieldName}__') or
@@ -294,7 +294,7 @@
                             </div>
 
                         </th:block>
-                        <th:block th:if="${ff.type == T(framework.CappuccinoFormFieldType).SELECT}">
+                        <th:block th:if="${ff.type == T(com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormFieldType).SELECT}">
                             <div th:class="${cappuccinoPageTO.cssClasses.inputGroup}"
                                  th:classappend="${#fields.hasErrors('__${ff.fieldName}__')} ? ${cappuccinoPageTO.cssClasses.inputGroupError}">
                                 <label th:class="${cappuccinoPageTO.cssClasses.inputLabel}" th:for="${ff.fieldName}">

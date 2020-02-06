@@ -13,7 +13,7 @@
 		<version>2.2.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.gccs-ne</groupId>
+	<groupId>com.github.cesarecontini</groupId>
 	<artifactId>cappuccino-framework</artifactId>
 	<version>1.0</version>
 	<name>Cappuccino Framework</name>

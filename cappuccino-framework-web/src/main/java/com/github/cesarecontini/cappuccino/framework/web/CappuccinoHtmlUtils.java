@@ -1,4 +1,4 @@
-package framework;
+package com.github.cesarecontini.cappuccino.framework.web;
 
 import org.apache.commons.lang3.StringUtils;
 import org.owasp.html.HtmlPolicyBuilder;

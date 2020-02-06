@@ -1,4 +1,4 @@
-package framework;
+package com.github.cesarecontini.cappuccino.framework.web;
 
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Assertions;

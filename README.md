@@ -11,11 +11,11 @@ The framework allows the following:
 
 ## Key source code package
 
-The framework source code is located @ .\cappuccino\cappuccino-framework-web\src\main\java\framework
+The framework source code is located @ ./cappuccino-framework-web/src/main/java/com/github/cesarecontini/cappuccino/framework/web
 
 ## Usage example
 
-Please refer to the  .\cappuccino\cappuccino-framework-web\src\test\java\webapp\FakeController.java 
+Please refer to the  ./cappuccino-framework-web/src/test/java/com/github/cesarecontini/cappuccino/framework/web/FakeController.java
 for an example usage for the framework. This controller class is used for testing purposes only.
 
 ### Non-form fragments
@@ -434,10 +434,10 @@ The following fields are available:
 
 Top hierarchy template dealing with page, resolving fragments:
 
-* .\cappuccino\cappuccino-framework-web\src\main\resources\templates\cappuccino-form-fragments.html
+* ./cappuccino-framework-web/src/main/resources/templates/cappuccino-form-fragments.html
 
 Template dealing with resolving form fields dynamically:
 
-* .\cappuccino\cappuccino-framework-web\src\main\resources\templates\cappuccino-standard-page.html
+* ./cappuccino-framework-web/src/main/resources/templates/cappuccino-standard-page.html
 
 
