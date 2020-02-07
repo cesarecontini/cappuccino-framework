@@ -15,6 +15,7 @@ import com.github.cesarecontini.cappuccino.framework.web.CappuccinoKeyValuePair;
 import com.github.cesarecontini.cappuccino.framework.web.CappuccinoPageTO;
 import com.github.cesarecontini.cappuccino.framework.web.CappuccinoPageUtils;
 import web.form.MyForm;
+import web.form.RegistrationForm;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -68,6 +69,47 @@ public class MyController
 		if(bindingResult.hasErrors())
 		{
 			return getModelAndView(form);
+		}
+		return new ModelAndView("redirect:/cool");
+	}
+
+	private ModelAndView registerModelAndView(RegistrationForm form)
+	{
+		List<CappuccinoFragmentTO> fragmentTOS = Lists.newArrayList(
+				new CappuccinoFragmentTO(
+						new CappuccinoFormBuilder<RegistrationForm>("my-form", CappuccinoForm.CappuccinoFormMethod.POST, "/register")
+								.withDefaultFields(RegistrationForm.class)
+								.build()
+				)
+		);
+
+		CappuccinoPageTO<Object, RegistrationForm> cappuccinoPageTO = new CappuccinoPageTO<>("Registration", "Register with us", fragmentTOS);
+		cappuccinoPageTO.setFormObject(form);
+		cappuccinoPageTO.setBreadcrumbs(
+				Lists.newArrayList(
+					new CappuccinoBreadcrumb("Home", "/"),
+					new CappuccinoBreadcrumb("Register", null)
+				)
+		);
+		return CappuccinoPageUtils.getModelAndViewForCappuccinoPage(cappuccinoPageTO);
+
+	}
+
+	@GetMapping("/register")
+	public ModelAndView register()
+	{
+		return registerModelAndView(new RegistrationForm());
+	}
+
+	@PostMapping("/register")
+	public ModelAndView registerPost(
+			@Valid @ModelAttribute(CappuccinoPageTO.CAPPUCCINO_FORM_OBJECT_KEY) RegistrationForm form,
+			BindingResult bindingResult
+	)
+	{
+		if(bindingResult.hasErrors())
+		{
+			return registerModelAndView(form);
 		}
 		return new ModelAndView("redirect:/cool");
 	}

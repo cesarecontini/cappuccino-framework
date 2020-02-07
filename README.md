@@ -6,8 +6,118 @@ This is the documentation for the CAPPUCCINO PAGES framework.
 
 The framework allows the following:
 
-* Creation of CAPPUCCINO pages using thymeleaf fragments instead of duplicating an existing template file
-* Creation of dynamic forms programmatically using the frameworks API
+* Creation of dynamic pages using thymeleaf fragments instead of duplicating an existing template file
+* Creation of dynamic forms programmatically using the cappuccino-framework API
+
+## Getting Started
+
+### Use an annotated form class
+
+TODO:
+
+1. Create an annotated form
+2. Create a `CappuccinoPageTO` object and implement `CappuccinoPageUtils.getModelAndViewForCappuccinoPage` method to obtain a ModelAndView object in a controller class
+
+Create an annotated form:
+
+```
+package web.form;
+
+import com.github.cesarecontini.cappuccino.framework.web.CappuccinoField;
+import com.github.cesarecontini.cappuccino.framework.web.CappuccinoFormFieldType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class RegistrationForm {
+
+    @CappuccinoField(label = "First name", cappuccinoFormFieldType = CappuccinoFormFieldType.TEXT, hint = "Your first name, max 50 characters", maxLength = 50)
+    @NotEmpty(message = "First name is a required field")
+    @Size(max = 50, message = "First name cannot exceed 50 characters")
+    private String firstName;
+
+    @CappuccinoField(label = "Last name", cappuccinoFormFieldType = CappuccinoFormFieldType.TEXT, hint = "Your last name, max 50 characters", maxLength = 50)
+    @NotEmpty(message = "Last name is a required field")
+    @Size(max = 50, message = "Last name cannot exceed 50 characters")
+    private String lastName;
+
+    @CappuccinoField(label = "Email", cappuccinoFormFieldType = CappuccinoFormFieldType.TEXT, hint = "A valid email address", maxLength = 254)
+    @NotEmpty(message = "Email is a required field")
+    @Email(message = "Please enter a valid email address")
+    private String email;
+
+}
+
+```
+
+Create a `CappuccinoPageTO` object:
+
+```
+private ModelAndView registerModelAndView(RegistrationForm form)
+	{
+		List<CappuccinoFragmentTO> fragmentTOS = Lists.newArrayList(
+				new CappuccinoFragmentTO(
+						new CappuccinoFormBuilder<RegistrationForm>("my-form", CappuccinoForm.CappuccinoFormMethod.POST, "/register")
+								.withDefaultFields(RegistrationForm.class)
+								.build()
+				)
+		);
+
+		CappuccinoPageTO<Object, RegistrationForm> cappuccinoPageTO = new CappuccinoPageTO<>("Registration", "Register with us", fragmentTOS);
+		cappuccinoPageTO.setFormObject(form);
+		cappuccinoPageTO.setBreadcrumbs(
+				Lists.newArrayList(
+					new CappuccinoBreadcrumb("Home", "/"),
+					new CappuccinoBreadcrumb("Register", null)
+				)
+		);
+		return CappuccinoPageUtils.getModelAndViewForCappuccinoPage(cappuccinoPageTO);
+
+	}
+```
+
+... and and implement `CappuccinoPageUtils.getModelAndViewForCappuccinoPage` method
+
+```
+@Controller
+public class MyController
+{
+        @GetMapping("/register")
+	public ModelAndView register()
+	{
+		return registerModelAndView(new RegistrationForm());
+	}
+
+	@PostMapping("/register")
+	public ModelAndView registerPost(
+        @Valid @ModelAttribute(CappuccinoPageTO.CAPPUCCINO_FORM_OBJECT_KEY) RegistrationForm form,
+        BindingResult bindingResult
+	)
+	{
+		if(bindingResult.hasErrors())
+		{
+			return registerModelAndView(form);
+		}
+		return new ModelAndView("redirect:/cool");
+	}
+}
+```
+
+The result is: 
+
+![Form page](./dynamic-form.png "Logo Title Text 1")
+
+And of course the form features validation:
+
+![Form page](./dynamic-form-validation.png "Logo Title Text 1")
+
 
 ## Key source code package
 
