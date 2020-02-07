@@ -2,12 +2,11 @@
 
 ## A framework for Spring Boot & Thymeleaf
 
-This is the documentation for the CAPPUCCINO PAGES framework.
-
 The framework allows the following:
 
 * Creation of dynamic pages using thymeleaf fragments instead of duplicating an existing template file
 * Creation of dynamic forms programmatically using the cappuccino-framework API
+* The initial theme is Bootstrap but main template files are editable and configurable
 
 ## Getting Started
 
