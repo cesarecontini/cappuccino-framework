@@ -44,7 +44,7 @@
         <version.spring-boot>2.2.3.RELEASE</version.spring-boot>
         <version.commons-lang3>3.9</version.commons-lang3>
         <version.lombok>1.18.10</version.lombok>
-        <version.owasp-java-html-sanitizer>20190610.1</version.owasp-java-html-sanitizer>
+        <version.owasp-java-html-sanitizer>20211018.1</version.owasp-java-html-sanitizer>
         <version.webjars-locator>0.38</version.webjars-locator>
         <com.google.guava>28.1-jre</com.google.guava>
 	</properties>
